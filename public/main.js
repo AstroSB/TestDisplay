@@ -10,6 +10,8 @@ let success_check = document.getElementById("success_check")
 let fail_check = document.getElementById("fail_check")
 let warning_check = document.getElementById("warning_check")
 let file_input = document.getElementById("my-awesome-dropzone")
+let message_popup = document.getElementById("message_popup")
+let popup_container = document.getElementById("popup_container")
 const detailLenght = 45;
 const generalLenght = 32
 let successfullTests = 0;
@@ -38,6 +40,7 @@ setTimeout(function () {
   successDisplay.innerHTML += successfullTests;
   warningDisplay.innerHTML += warningTests;
   autocomplete(searchbar, getAutoArray())
+  animatePopupInit()
 }, 400)
 const fileInput = document.getElementById('fileInput');
 fileInput.addEventListener('change', (event) => {
@@ -54,8 +57,6 @@ document.addEventListener('keydown', (event) => {
   }
 });
 }
-
-
 /*----------------------------------------------------------------------------------*/
 /*Main Functions*/
 
@@ -74,7 +75,7 @@ function generateResults(search, checkSuccessError) {
       exportCode += `
       <div class="message_container" id="${i}_message" style="box-shadow: 0.2vw 1vw 2.2vw 0vw ${colorOfSmoke};">
       ${checkTimeLimit(i)}
-      <div class="button_display">
+      <div class="button_display" ondblclick="generatePopup(${i})">
       <p class="button_text" title="${jsonData.ttTestCaseResults[i].cSuite}">${nameOfError}\n[${descriptionofError}]</p>
       </div>
       <img class="dropdown_arrow" src="./img/dropdown-pfeil.png" onclick="generateDetails(${i})">
@@ -94,30 +95,30 @@ function generateResults(search, checkSuccessError) {
     else if (search == '' && checkSuccessError != '') {
       if (checkSuccessError == "success" && jsonData.ttTestCaseResults[i].lSuccess == true) {
         exportCode += `
-      <div class="message_container" id="${i}_message" style="box-shadow: 0.2vw 1vw 2.2vw 0vw ${colorOfSmoke};">
-      ${checkTimeLimit(i)}
-      <div class="button_display">
-      <p class="button_text" title="${jsonData.ttTestCaseResults[i].cSuite}">${nameOfError}\n[${descriptionofError}]</p>
-      </div>
-      <img class="dropdown_arrow" src="./img/dropdown-pfeil.png" onclick="generateDetails(${i})">
-      <div class="detail_container" id="${i}_detail">
-      <!--cTest-->    <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cTest)}">${getNameOfError(jsonData.ttTestCaseResults[i].cTest, detailLenght)}</p>
-      <!--cRuntime-->   <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cRunDescription)}">${getNameOfError(jsonData.ttTestCaseResults[i].cRunDescription, detailLenght)}</p>
-      <!--ExitCode-->  <p title="${jsonData.ttTestCaseResults[i].iExitCode}">${getNameOfError(jsonData.ttTestCaseResults[i].iExitCode, detailLenght)}</p>
-      <!--ExceptionMessage-->  <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cExceptionMessage)}">${getNameOfError(jsonData.ttTestCaseResults[i].cExceptionMessage, detailLenght)}</p>
-      <!--cInfo-->  <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cInfoMessages)}">${escapeHTML(getNameOfError(jsonData.ttTestCaseResults[i].cInfoMessages, detailLenght))}</p>
-      <!--Time-->  <p title="${jsonData.ttTestCaseResults[i].dTotalExecutionTime}">${getNameOfError(jsonData.ttTestCaseResults[i].dTotalExecutionTime, detailLenght)}</p>
-      <!--Time-->  <p title="${jsonData.ttTestCaseResults[i].dTestCaseExecutionTime}">${getNameOfError(jsonData.ttTestCaseResults[i].dTestCaseExecutionTime, detailLenght)}</p>
-      <!--Alert-->  <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cPerformanceAlert)}">${getNameOfError(jsonData.ttTestCaseResults[i].cPerformanceAlert, detailLenght)}</p>
-      <!--PInfo-->  <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cPerformanceInfo)}">${getNameOfError(jsonData.ttTestCaseResults[i].cPerformanceInfo, detailLenght)}</p>
-      </div>
-      </div>`
+        <div class="message_container" id="${i}_message" style="box-shadow: 0.2vw 1vw 2.2vw 0vw ${colorOfSmoke};">
+        ${checkTimeLimit(i)}
+        <div class="button_display" ondblclick="generatePopup(${i})">
+        <p class="button_text" title="${jsonData.ttTestCaseResults[i].cSuite}">${nameOfError}\n[${descriptionofError}]</p>
+        </div>
+        <img class="dropdown_arrow" src="./img/dropdown-pfeil.png" onclick="generateDetails(${i})">
+        <div class="detail_container" id="${i}_detail">
+        <!--cTest-->    <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cTest)}">${getNameOfError(jsonData.ttTestCaseResults[i].cTest, detailLenght)}</p>
+        <!--cRuntime-->   <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cRunDescription)}">${getNameOfError(jsonData.ttTestCaseResults[i].cRunDescription, detailLenght)}</p>
+        <!--ExitCode-->  <p title="${jsonData.ttTestCaseResults[i].iExitCode}">${getNameOfError(jsonData.ttTestCaseResults[i].iExitCode, detailLenght)}</p>
+        <!--ExceptionMessage-->  <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cExceptionMessage)}">${getNameOfError(jsonData.ttTestCaseResults[i].cExceptionMessage, detailLenght)}</p>
+        <!--cInfo-->  <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cInfoMessages)}">${escapeHTML(getNameOfError(jsonData.ttTestCaseResults[i].cInfoMessages, detailLenght))}</p>
+        <!--Time-->  <p title="${jsonData.ttTestCaseResults[i].dTotalExecutionTime}">${getNameOfError(jsonData.ttTestCaseResults[i].dTotalExecutionTime, detailLenght)}</p>
+        <!--Time-->  <p title="${jsonData.ttTestCaseResults[i].dTestCaseExecutionTime}">${getNameOfError(jsonData.ttTestCaseResults[i].dTestCaseExecutionTime, detailLenght)}</p>
+        <!--Alert-->  <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cPerformanceAlert)}">${getNameOfError(jsonData.ttTestCaseResults[i].cPerformanceAlert, detailLenght)}</p>
+        <!--PInfo-->  <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cPerformanceInfo)}">${getNameOfError(jsonData.ttTestCaseResults[i].cPerformanceInfo, detailLenght)}</p>
+        </div>
+        </div>`
       }
       else if (checkSuccessError == "fail" && jsonData.ttTestCaseResults[i].lSuccess == false) {
         exportCode += `
         <div class="message_container" id="${i}_message" style="box-shadow: 0.2vw 1vw 2.2vw 0vw ${colorOfSmoke};">
         ${checkTimeLimit(i)}
-        <div class="button_display">
+        <div class="button_display" ondblclick="generatePopup(${i})">
         <p class="button_text" title="${jsonData.ttTestCaseResults[i].cSuite}">${nameOfError}\n[${descriptionofError}]</p>
         </div>
         <img class="dropdown_arrow" src="./img/dropdown-pfeil.png" onclick="generateDetails(${i})">
@@ -136,24 +137,24 @@ function generateResults(search, checkSuccessError) {
       }
       else if (checkSuccessError == "warning" && jsonData.ttTestCaseResults[i].lSuccess == true && checkTimeLimit(i) != "") {
         exportCode += `
-        <div class="message_container" id="${i}_message" style="box-shadow: 0.2vw 1vw 2.2vw 0vw ${colorOfSmoke};">
-        ${checkTimeLimit(i)}
-        <div class="button_display">
-        <p class="button_text" title="${jsonData.ttTestCaseResults[i].cSuite}">${nameOfError}\n[${descriptionofError}]</p>
-        </div>
-        <img class="dropdown_arrow" src="./img/dropdown-pfeil.png" onclick="generateDetails(${i})">
-        <div class="detail_container" id="${i}_detail">
-        <!--cTest-->    <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cTest)}">${getNameOfError(jsonData.ttTestCaseResults[i].cTest, detailLenght)}</p>
-        <!--cRuntime-->   <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cRunDescription)}">${getNameOfError(jsonData.ttTestCaseResults[i].cRunDescription, detailLenght)}</p>
-        <!--ExitCode-->  <p title="${jsonData.ttTestCaseResults[i].iExitCode}">${getNameOfError(jsonData.ttTestCaseResults[i].iExitCode, detailLenght)}</p>
-        <!--ExceptionMessage-->  <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cExceptionMessage)}">${getNameOfError(jsonData.ttTestCaseResults[i].cExceptionMessage, detailLenght)}</p>
-        <!--cInfo-->  <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cInfoMessages)}">${escapeHTML(getNameOfError(jsonData.ttTestCaseResults[i].cInfoMessages, detailLenght))}</p>
-        <!--Time-->  <p title="${jsonData.ttTestCaseResults[i].dTotalExecutionTime}">${getNameOfError(jsonData.ttTestCaseResults[i].dTotalExecutionTime, detailLenght)}</p>
-        <!--Time-->  <p title="${jsonData.ttTestCaseResults[i].dTestCaseExecutionTime}">${getNameOfError(jsonData.ttTestCaseResults[i].dTestCaseExecutionTime, detailLenght)}</p>
-        <!--Alert-->  <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cPerformanceAlert)}">${getNameOfError(jsonData.ttTestCaseResults[i].cPerformanceAlert, detailLenght)}</p>
-        <!--PInfo-->  <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cPerformanceInfo)}">${getNameOfError(jsonData.ttTestCaseResults[i].cPerformanceInfo, detailLenght)}</p>
-        </div>
-        </div>`
+      <div class="message_container" id="${i}_message" style="box-shadow: 0.2vw 1vw 2.2vw 0vw ${colorOfSmoke};">
+      ${checkTimeLimit(i)}
+      <div class="button_display" ondblclick="generatePopup(${i})">
+      <p class="button_text" title="${jsonData.ttTestCaseResults[i].cSuite}">${nameOfError}\n[${descriptionofError}]</p>
+      </div>
+      <img class="dropdown_arrow" src="./img/dropdown-pfeil.png" onclick="generateDetails(${i})">
+      <div class="detail_container" id="${i}_detail">
+      <!--cTest-->    <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cTest)}">${getNameOfError(jsonData.ttTestCaseResults[i].cTest, detailLenght)}</p>
+      <!--cRuntime-->   <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cRunDescription)}">${getNameOfError(jsonData.ttTestCaseResults[i].cRunDescription, detailLenght)}</p>
+      <!--ExitCode-->  <p title="${jsonData.ttTestCaseResults[i].iExitCode}">${getNameOfError(jsonData.ttTestCaseResults[i].iExitCode, detailLenght)}</p>
+      <!--ExceptionMessage-->  <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cExceptionMessage)}">${getNameOfError(jsonData.ttTestCaseResults[i].cExceptionMessage, detailLenght)}</p>
+      <!--cInfo-->  <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cInfoMessages)}">${escapeHTML(getNameOfError(jsonData.ttTestCaseResults[i].cInfoMessages, detailLenght))}</p>
+      <!--Time-->  <p title="${jsonData.ttTestCaseResults[i].dTotalExecutionTime}">${getNameOfError(jsonData.ttTestCaseResults[i].dTotalExecutionTime, detailLenght)}</p>
+      <!--Time-->  <p title="${jsonData.ttTestCaseResults[i].dTestCaseExecutionTime}">${getNameOfError(jsonData.ttTestCaseResults[i].dTestCaseExecutionTime, detailLenght)}</p>
+      <!--Alert-->  <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cPerformanceAlert)}">${getNameOfError(jsonData.ttTestCaseResults[i].cPerformanceAlert, detailLenght)}</p>
+      <!--PInfo-->  <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cPerformanceInfo)}">${getNameOfError(jsonData.ttTestCaseResults[i].cPerformanceInfo, detailLenght)}</p>
+      </div>
+      </div>`
       
       }
       else if (checkSuccessError == "both_TandW" && jsonData.ttTestCaseResults[i].lSuccess == true) {
@@ -161,7 +162,7 @@ function generateResults(search, checkSuccessError) {
         exportCode += `
         <div class="message_container" id="${i}_message" style="box-shadow: 0.2vw 1vw 2.2vw 0vw ${colorOfSmoke};">
         ${checkTimeLimit(i)}
-        <div class="button_display">
+        <div class="button_display" ondblclick="generatePopup(${i})">
         <p class="button_text" title="${jsonData.ttTestCaseResults[i].cSuite}">${nameOfError}\n[${descriptionofError}]</p>
         </div>
         <img class="dropdown_arrow" src="./img/dropdown-pfeil.png" onclick="generateDetails(${i})">
@@ -183,24 +184,24 @@ function generateResults(search, checkSuccessError) {
     else if (search != '' && checkSuccessError == '') {
       if (((nameOfError.toLowerCase()).includes(search.toLowerCase()) || (descriptionofError.toLowerCase()).includes(search.toLowerCase()))) {
         exportCode += `
-      <div class="message_container" id="${i}_message" style="box-shadow: 0.2vw 1vw 2.2vw 0vw ${colorOfSmoke};">
-      ${checkTimeLimit(i)}
-      <div class="button_display">
-      <p class="button_text" title="${jsonData.ttTestCaseResults[i].cSuite}">${nameOfError}\n[${descriptionofError}]</p>
-      </div>
-      <img class="dropdown_arrow" src="./img/dropdown-pfeil.png" onclick="generateDetails(${i})">
-      <div class="detail_container" id="${i}_detail">
-      <!--cTest-->    <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cTest)}">${getNameOfError(jsonData.ttTestCaseResults[i].cTest, detailLenght)}</p>
-      <!--cRuntime-->   <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cRunDescription)}">${getNameOfError(jsonData.ttTestCaseResults[i].cRunDescription, detailLenght)}</p>
-      <!--ExitCode-->  <p title="${jsonData.ttTestCaseResults[i].iExitCode}">${getNameOfError(jsonData.ttTestCaseResults[i].iExitCode, detailLenght)}</p>
-      <!--ExceptionMessage-->  <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cExceptionMessage)}">${getNameOfError(jsonData.ttTestCaseResults[i].cExceptionMessage, detailLenght)}</p>
-      <!--cInfo-->  <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cInfoMessages)}">${escapeHTML(getNameOfError(jsonData.ttTestCaseResults[i].cInfoMessages, detailLenght))}</p>
-      <!--Time-->  <p title="${jsonData.ttTestCaseResults[i].dTotalExecutionTime}">${getNameOfError(jsonData.ttTestCaseResults[i].dTotalExecutionTime, detailLenght)}</p>
-      <!--Time-->  <p title="${jsonData.ttTestCaseResults[i].dTestCaseExecutionTime}">${getNameOfError(jsonData.ttTestCaseResults[i].dTestCaseExecutionTime, detailLenght)}</p>
-      <!--Alert-->  <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cPerformanceAlert)}">${getNameOfError(jsonData.ttTestCaseResults[i].cPerformanceAlert, detailLenght)}</p>
-      <!--PInfo-->  <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cPerformanceInfo)}">${getNameOfError(jsonData.ttTestCaseResults[i].cPerformanceInfo, detailLenght)}</p>
-      </div>
-      </div>`
+        <div class="message_container" id="${i}_message" style="box-shadow: 0.2vw 1vw 2.2vw 0vw ${colorOfSmoke};">
+        ${checkTimeLimit(i)}
+        <div class="button_display" ondblclick="generatePopup(${i})">
+        <p class="button_text" title="${jsonData.ttTestCaseResults[i].cSuite}">${nameOfError}\n[${descriptionofError}]</p>
+        </div>
+        <img class="dropdown_arrow" src="./img/dropdown-pfeil.png" onclick="generateDetails(${i})">
+        <div class="detail_container" id="${i}_detail">
+        <!--cTest-->    <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cTest)}">${getNameOfError(jsonData.ttTestCaseResults[i].cTest, detailLenght)}</p>
+        <!--cRuntime-->   <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cRunDescription)}">${getNameOfError(jsonData.ttTestCaseResults[i].cRunDescription, detailLenght)}</p>
+        <!--ExitCode-->  <p title="${jsonData.ttTestCaseResults[i].iExitCode}">${getNameOfError(jsonData.ttTestCaseResults[i].iExitCode, detailLenght)}</p>
+        <!--ExceptionMessage-->  <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cExceptionMessage)}">${getNameOfError(jsonData.ttTestCaseResults[i].cExceptionMessage, detailLenght)}</p>
+        <!--cInfo-->  <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cInfoMessages)}">${escapeHTML(getNameOfError(jsonData.ttTestCaseResults[i].cInfoMessages, detailLenght))}</p>
+        <!--Time-->  <p title="${jsonData.ttTestCaseResults[i].dTotalExecutionTime}">${getNameOfError(jsonData.ttTestCaseResults[i].dTotalExecutionTime, detailLenght)}</p>
+        <!--Time-->  <p title="${jsonData.ttTestCaseResults[i].dTestCaseExecutionTime}">${getNameOfError(jsonData.ttTestCaseResults[i].dTestCaseExecutionTime, detailLenght)}</p>
+        <!--Alert-->  <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cPerformanceAlert)}">${getNameOfError(jsonData.ttTestCaseResults[i].cPerformanceAlert, detailLenght)}</p>
+        <!--PInfo-->  <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cPerformanceInfo)}">${getNameOfError(jsonData.ttTestCaseResults[i].cPerformanceInfo, detailLenght)}</p>
+        </div>
+        </div>`
       }
 
     }
@@ -209,7 +210,7 @@ function generateResults(search, checkSuccessError) {
         exportCode += `
       <div class="message_container" id="${i}_message" style="box-shadow: 0.2vw 1vw 2.2vw 0vw ${colorOfSmoke};">
       ${checkTimeLimit(i)}
-      <div class="button_display">
+      <div class="button_display" ondblclick="generatePopup(${i})">
       <p class="button_text" title="${jsonData.ttTestCaseResults[i].cSuite}">${nameOfError}\n[${descriptionofError}]</p>
       </div>
       <img class="dropdown_arrow" src="./img/dropdown-pfeil.png" onclick="generateDetails(${i})">
@@ -228,31 +229,31 @@ function generateResults(search, checkSuccessError) {
       }
       else if (((nameOfError.toLowerCase()).includes(search.toLowerCase()) || (descriptionofError.toLowerCase()).includes(search.toLowerCase())) && checkSuccessError == "fail" && jsonData.ttTestCaseResults[i].lSuccess == false) {
         exportCode += `
-      <div class="message_container" id="${i}_message" style="box-shadow: 0.2vw 1vw 2.2vw 0vw ${colorOfSmoke};">
-      ${checkTimeLimit(i)}
-      <div class="button_display">
-      <p class="button_text" title="${jsonData.ttTestCaseResults[i].cSuite}">${nameOfError}\n[${descriptionofError}]</p>
-      </div>
-      <img class="dropdown_arrow" src="./img/dropdown-pfeil.png" onclick="generateDetails(${i})">
-      <div class="detail_container" id="${i}_detail">
-      <!--cTest-->    <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cTest)}">${getNameOfError(jsonData.ttTestCaseResults[i].cTest, detailLenght)}</p>
-      <!--cRuntime-->   <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cRunDescription)}">${getNameOfError(jsonData.ttTestCaseResults[i].cRunDescription, detailLenght)}</p>
-      <!--ExitCode-->  <p title="${jsonData.ttTestCaseResults[i].iExitCode}">${getNameOfError(jsonData.ttTestCaseResults[i].iExitCode, detailLenght)}</p>
-      <!--ExceptionMessage-->  <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cExceptionMessage)}">${getNameOfError(jsonData.ttTestCaseResults[i].cExceptionMessage, detailLenght)}</p>
-      <!--cInfo-->  <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cInfoMessages)}">${escapeHTML(getNameOfError(jsonData.ttTestCaseResults[i].cInfoMessages, detailLenght))}</p>
-      <!--Time-->  <p title="${jsonData.ttTestCaseResults[i].dTotalExecutionTime}">${getNameOfError(jsonData.ttTestCaseResults[i].dTotalExecutionTime, detailLenght)}</p>
-      <!--Time-->  <p title="${jsonData.ttTestCaseResults[i].dTestCaseExecutionTime}">${getNameOfError(jsonData.ttTestCaseResults[i].dTestCaseExecutionTime, detailLenght)}</p>
-      <!--Alert-->  <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cPerformanceAlert)}">${getNameOfError(jsonData.ttTestCaseResults[i].cPerformanceAlert, detailLenght)}</p>
-      <!--PInfo-->  <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cPerformanceInfo)}">${getNameOfError(jsonData.ttTestCaseResults[i].cPerformanceInfo, detailLenght)}</p>
-      </div>
-      </div>`
+        <div class="message_container" id="${i}_message" style="box-shadow: 0.2vw 1vw 2.2vw 0vw ${colorOfSmoke};">
+        ${checkTimeLimit(i)}
+        <div class="button_display" ondblclick="generatePopup(${i})">
+        <p class="button_text" title="${jsonData.ttTestCaseResults[i].cSuite}">${nameOfError}\n[${descriptionofError}]</p>
+        </div>
+        <img class="dropdown_arrow" src="./img/dropdown-pfeil.png" onclick="generateDetails(${i})">
+        <div class="detail_container" id="${i}_detail">
+        <!--cTest-->    <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cTest)}">${getNameOfError(jsonData.ttTestCaseResults[i].cTest, detailLenght)}</p>
+        <!--cRuntime-->   <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cRunDescription)}">${getNameOfError(jsonData.ttTestCaseResults[i].cRunDescription, detailLenght)}</p>
+        <!--ExitCode-->  <p title="${jsonData.ttTestCaseResults[i].iExitCode}">${getNameOfError(jsonData.ttTestCaseResults[i].iExitCode, detailLenght)}</p>
+        <!--ExceptionMessage-->  <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cExceptionMessage)}">${getNameOfError(jsonData.ttTestCaseResults[i].cExceptionMessage, detailLenght)}</p>
+        <!--cInfo-->  <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cInfoMessages)}">${escapeHTML(getNameOfError(jsonData.ttTestCaseResults[i].cInfoMessages, detailLenght))}</p>
+        <!--Time-->  <p title="${jsonData.ttTestCaseResults[i].dTotalExecutionTime}">${getNameOfError(jsonData.ttTestCaseResults[i].dTotalExecutionTime, detailLenght)}</p>
+        <!--Time-->  <p title="${jsonData.ttTestCaseResults[i].dTestCaseExecutionTime}">${getNameOfError(jsonData.ttTestCaseResults[i].dTestCaseExecutionTime, detailLenght)}</p>
+        <!--Alert-->  <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cPerformanceAlert)}">${getNameOfError(jsonData.ttTestCaseResults[i].cPerformanceAlert, detailLenght)}</p>
+        <!--PInfo-->  <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cPerformanceInfo)}">${getNameOfError(jsonData.ttTestCaseResults[i].cPerformanceInfo, detailLenght)}</p>
+        </div>
+        </div>`
       }
       else if (((nameOfError.toLowerCase()).includes(search.toLowerCase()) || (descriptionofError.toLowerCase()).includes(search.toLowerCase())) && checkSuccessError == "both_TandF") {
         exportCode += `
         <div class="message_container" id="${i}_message" style="box-shadow: 0.2vw 1vw 2.2vw 0vw ${colorOfSmoke};">
         ${checkTimeLimit(i)}
-        <div class="button_display">
-            <p class="button_text" title="${jsonData.ttTestCaseResults[i].cSuite}">${nameOfError}\n[${descriptionofError}]</p>
+        <div class="button_display" ondblclick="generatePopup(${i})">
+        <p class="button_text" title="${jsonData.ttTestCaseResults[i].cSuite}">${nameOfError}\n[${descriptionofError}]</p>
         </div>
         <img class="dropdown_arrow" src="./img/dropdown-pfeil.png" onclick="generateDetails(${i})">
         <div class="detail_container" id="${i}_detail">
@@ -270,31 +271,31 @@ function generateResults(search, checkSuccessError) {
       }
       else if (((nameOfError.toLowerCase()).includes(search.toLowerCase()) || (descriptionofError.toLowerCase()).includes(search.toLowerCase())) && checkSuccessError == "warning" && jsonData.ttTestCaseResults[i].lSuccess == true && checkTimeLimit(i) != "") {
         exportCode += `
-        <div class="message_container" id="${i}_message" style="box-shadow: 0.2vw 1vw 2.2vw 0vw ${colorOfSmoke};">
-        ${checkTimeLimit(i)}
-        <div class="button_display">
-            <p class="button_text" title="${jsonData.ttTestCaseResults[i].cSuite}">${nameOfError}\n[${descriptionofError}]</p>
-        </div>
-        <img class="dropdown_arrow" src="./img/dropdown-pfeil.png" onclick="generateDetails(${i})">
-        <div class="detail_container" id="${i}_detail">
-        <!--cTest-->    <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cTest)}">${getNameOfError(jsonData.ttTestCaseResults[i].cTest, detailLenght)}</p>
-        <!--cRuntime-->   <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cRunDescription)}">${getNameOfError(jsonData.ttTestCaseResults[i].cRunDescription, detailLenght)}</p>
-        <!--ExitCode-->  <p title="${jsonData.ttTestCaseResults[i].iExitCode}">${getNameOfError(jsonData.ttTestCaseResults[i].iExitCode, detailLenght)}</p>
-        <!--ExceptionMessage-->  <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cExceptionMessage)}">${getNameOfError(jsonData.ttTestCaseResults[i].cExceptionMessage, detailLenght)}</p>
-        <!--cInfo-->  <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cInfoMessages)}">${escapeHTML(getNameOfError(jsonData.ttTestCaseResults[i].cInfoMessages, detailLenght))}</p>
-        <!--Time-->  <p title="${jsonData.ttTestCaseResults[i].dTotalExecutionTime}">${getNameOfError(jsonData.ttTestCaseResults[i].dTotalExecutionTime, detailLenght)}</p>
-        <!--Time-->  <p title="${jsonData.ttTestCaseResults[i].dTestCaseExecutionTime}">${getNameOfError(jsonData.ttTestCaseResults[i].dTestCaseExecutionTime, detailLenght)}</p>
-        <!--Alert-->  <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cPerformanceAlert)}">${getNameOfError(jsonData.ttTestCaseResults[i].cPerformanceAlert, detailLenght)}</p>
-        <!--PInfo-->  <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cPerformanceInfo)}">${getNameOfError(jsonData.ttTestCaseResults[i].cPerformanceInfo, detailLenght)}</p>
-        </div>
-        </div>`
+      <div class="message_container" id="${i}_message" style="box-shadow: 0.2vw 1vw 2.2vw 0vw ${colorOfSmoke};">
+      ${checkTimeLimit(i)}
+      <div class="button_display" ondblclick="generatePopup(${i})">
+      <p class="button_text" title="${jsonData.ttTestCaseResults[i].cSuite}">${nameOfError}\n[${descriptionofError}]</p>
+      </div>
+      <img class="dropdown_arrow" src="./img/dropdown-pfeil.png" onclick="generateDetails(${i})">
+      <div class="detail_container" id="${i}_detail">
+      <!--cTest-->    <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cTest)}">${getNameOfError(jsonData.ttTestCaseResults[i].cTest, detailLenght)}</p>
+      <!--cRuntime-->   <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cRunDescription)}">${getNameOfError(jsonData.ttTestCaseResults[i].cRunDescription, detailLenght)}</p>
+      <!--ExitCode-->  <p title="${jsonData.ttTestCaseResults[i].iExitCode}">${getNameOfError(jsonData.ttTestCaseResults[i].iExitCode, detailLenght)}</p>
+      <!--ExceptionMessage-->  <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cExceptionMessage)}">${getNameOfError(jsonData.ttTestCaseResults[i].cExceptionMessage, detailLenght)}</p>
+      <!--cInfo-->  <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cInfoMessages)}">${escapeHTML(getNameOfError(jsonData.ttTestCaseResults[i].cInfoMessages, detailLenght))}</p>
+      <!--Time-->  <p title="${jsonData.ttTestCaseResults[i].dTotalExecutionTime}">${getNameOfError(jsonData.ttTestCaseResults[i].dTotalExecutionTime, detailLenght)}</p>
+      <!--Time-->  <p title="${jsonData.ttTestCaseResults[i].dTestCaseExecutionTime}">${getNameOfError(jsonData.ttTestCaseResults[i].dTestCaseExecutionTime, detailLenght)}</p>
+      <!--Alert-->  <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cPerformanceAlert)}">${getNameOfError(jsonData.ttTestCaseResults[i].cPerformanceAlert, detailLenght)}</p>
+      <!--PInfo-->  <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cPerformanceInfo)}">${getNameOfError(jsonData.ttTestCaseResults[i].cPerformanceInfo, detailLenght)}</p>
+      </div>
+      </div>`
       }
       else if (((nameOfError.toLowerCase()).includes(search.toLowerCase()) || (descriptionofError.toLowerCase()).includes(search.toLowerCase())) && checkSuccessError == "both_TandW" && jsonData.ttTestCaseResults[i].lSuccess == true) {
         exportCode += `
         <div class="message_container" id="${i}_message" style="box-shadow: 0.2vw 1vw 2.2vw 0vw ${colorOfSmoke};">
         ${checkTimeLimit(i)}
-        <div class="button_display">
-            <p class="button_text" title="${jsonData.ttTestCaseResults[i].cSuite}">${nameOfError}\n[${descriptionofError}]</p>
+        <div class="button_display" ondblclick="generatePopup(${i})">
+        <p class="button_text" title="${jsonData.ttTestCaseResults[i].cSuite}">${nameOfError}\n[${descriptionofError}]</p>
         </div>
         <img class="dropdown_arrow" src="./img/dropdown-pfeil.png" onclick="generateDetails(${i})">
         <div class="detail_container" id="${i}_detail">
@@ -375,7 +376,55 @@ function Recall() {
     warningDisplay.innerHTML += warningTests;
   }, 400)
 }
+//Function to generate a popup on double click
+function generatePopup(i) {
+  message_popup.style.top =  window.scrollY + 200+ "px"
+  if (message_popup.style.display === 'none') {
+    message_popup.innerHTML = `
+    <div id="popup_container" ondblclick="generatePopup(${i})" >
+        <!--cTest-->    <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cTest)}">${jsonData.ttTestCaseResults[i].cTest}</p>
+        <!--cRuntime-->   <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cRunDescription)}">${jsonData.ttTestCaseResults[i].cRunDescription}</p>
+        <!--ExitCode-->  <p title="${jsonData.ttTestCaseResults[i].iExitCode}">${jsonData.ttTestCaseResults[i].iExitCode}</p>
+        <!--ExceptionMessage-->  <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cExceptionMessage)}">${jsonData.ttTestCaseResults[i].cExceptionMessage}</p>
+        <!--cInfo--><div id="infoContainer"></div>
+        <!--Time-->  <p title="${jsonData.ttTestCaseResults[i].dTotalExecutionTime}">${jsonData.ttTestCaseResults[i].dTotalExecutionTime}</p>
+        <!--Time-->  <p title="${jsonData.ttTestCaseResults[i].dTestCaseExecutionTime}">${jsonData.ttTestCaseResults[i].dTestCaseExecutionTime}</p>
+        <!--Alert-->  <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cPerformanceAlert)}">${jsonData.ttTestCaseResults[i].cPerformanceAlert}</p>
+        <!--PInfo-->  <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cPerformanceInfo)}">${jsonData.ttTestCaseResults[i].cPerformanceInfo}</p>
+        </div>
+    `
+    document.getElementById("infoContainer").appendChild(generateInfo(escapeHTML(jsonData.ttTestCaseResults[i].cInfoMessages)))
+    message_popup.style.display = 'block'
+    animatePopup(true)
+  }
+  else if (message_popup.style.display === 'block') {
+   
+    animatePopup(false)
+   /setTimeout(function(){
+      message_popup.style.display = 'none'
+    },150)
 
+  }
+  else{
+    message_popup.innerHTML = `
+    <div id="popup_container" ondblclick="generatePopup(${i})">
+        <!--cTest-->    <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cTest)}">${jsonData.ttTestCaseResults[i].cTest}</p>
+        <!--cRuntime-->   <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cRunDescription)}">${jsonData.ttTestCaseResults[i].cRunDescription}</p>
+        <!--ExitCode-->  <p title="${jsonData.ttTestCaseResults[i].iExitCode}">${jsonData.ttTestCaseResults[i].iExitCode}</p>
+        <!--ExceptionMessage-->  <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cExceptionMessage)}">${jsonData.ttTestCaseResults[i].cExceptionMessage}</p>
+        <!--cInfo--><div id="infoContainer"></div>
+        <!--Time-->  <p title="${jsonData.ttTestCaseResults[i].dTotalExecutionTime}">${jsonData.ttTestCaseResults[i].dTotalExecutionTime}</p>
+        <!--Time-->  <p title="${jsonData.ttTestCaseResults[i].dTestCaseExecutionTime}">${jsonData.ttTestCaseResults[i].dTestCaseExecutionTime}</p>
+        <!--Alert-->  <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cPerformanceAlert)}">${jsonData.ttTestCaseResults[i].cPerformanceAlert}</p>
+        <!--PInfo-->  <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cPerformanceInfo)}">${jsonData.ttTestCaseResults[i].cPerformanceInfo}</p>
+        </div>
+    `
+    document.getElementById("infoContainer").appendChild(generateInfo(escapeHTML(jsonData.ttTestCaseResults[i].cInfoMessages)))
+    message_popup.style.display = 'block'
+    animatePopup(true)
+  }
+ 
+}
 
 /*----------------------------------------------------------------------------------*/
 /*Help Functions*/
@@ -445,6 +494,7 @@ function getAutoArray() {
   exportArray = exportArray1.concat(exportArray2)
   exportArray = exportArray.concat(exportArray3)
   var unique = exportArray.filter(onlyUnique);
+  sort(unique, unique.length)
   return unique
 }
 //reads the filecontent of a newly given JSON file
@@ -608,7 +658,42 @@ function checkTimeLimit(i) {
     return ""
   }
 }
+//sorts array based on lenght 
+function sort(s, n)
+{
+    for (let i = 1 ; i < n; i++)
+    {
+        let temp = s[i];
 
+        // Insert s[j] at its correct position
+        let j = i - 1;
+        while (j >= 0 && temp.length < s[j].length)
+        {
+            s[j + 1] = s[j];
+            j--;
+        }
+        s[j + 1] = temp;
+    }
+}
+//generates info <br> tags
+function generateInfo(string) {
+
+
+    const stringWithoutNewlines = string.replace(/\n/g, '');  
+    const parts = stringWithoutNewlines.split('#');
+    const paragraph = document.createElement('p');
+    for (let i = 0; i < parts.length; i++) {
+      paragraph.appendChild(document.createTextNode(parts[i]));
+  
+      if (i < parts.length - 1) {
+        paragraph.appendChild(document.createElement('br'));
+      }
+    }
+    console.log(paragraph);
+    return paragraph;
+
+  
+}
 /*----------------------------------------------------------------------------------*/
 /**anime js*/
 function animateDetail(detail,message, inAndOut) {
@@ -641,4 +726,32 @@ function animateDetail(detail,message, inAndOut) {
     });
   }
 
+}
+function animatePopup(inAndOut) {
+  console.log("animate");
+  if(inAndOut){
+    anime({
+      targets: message_popup,
+      scale: 1, 
+      duration: 400,
+      delay: 100
+    });
+  }
+  else{
+    console.log("animate back");
+    anime({
+      targets: message_popup,
+      scale: 0, 
+      duration: 200,
+      delay: 100
+    });
+  }
+}
+function animatePopupInit() {
+  anime({
+    targets: message_popup,
+    scale: 0, 
+    duration: 400,
+    delay: 0
+  });
 }

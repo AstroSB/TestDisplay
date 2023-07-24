@@ -197,7 +197,32 @@ margin-bottom: 10vw;
     border: var(--moveITBlack) 0.1vw solid;
 
 }
-
+#message_popup{
+    width: 80%;
+    display: none;
+    min-height: 25vw;
+    border: var(--moveITBlack) 0.1vw solid;
+    left: 10%;
+    position: absolute;
+    top: 5%;
+    background-color: #FFFFFF;
+    border-radius: 1vw;
+    box-shadow: 0.2vw 1vw 2.2vw 0vw rgba(0,0,0,0.75);
+    padding: 1vw;
+}
+#popup_container{
+    width: 90%;
+    display: grid;
+    grid-template-columns: 110%;
+    grid-gap: 0.2vw;
+}
+#popup_container p{
+    margin: 0;
+    font-size: 1.5vw;
+    font-family: "Satoshi", Sans-serif;
+    font-weight: bold;
+    border: var(--moveITBlack) 0.1vw solid;
+}
 .autocomplete {
     /*the container must be positioned relative:*/
     position: relative;
