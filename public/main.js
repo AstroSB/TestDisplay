@@ -455,7 +455,7 @@ function animatePopup(inAndOut) {
     anime({
       targets: message_popup,
       scale: 1, 
-      duration: 400,
+      duration: 800,
       delay: 100
     });
   }

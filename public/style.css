@@ -236,7 +236,7 @@ margin-bottom: 10vw;
     top: 5%;
     background-color: #FFFFFF;
     border-radius: 1vw;
-    box-shadow: 0.2vw 1vw 2.2vw 0vw rgba(0,0,0,0.75);
+    box-shadow: 0.2vw 1vw 2.2vw 0vw var(--moveITPrimary);
     padding: 1vw;
 }
 #popup_container{
