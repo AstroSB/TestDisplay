@@ -52,7 +52,7 @@ function AutoSuggestControl(id_or_element /*:HTMLInputElement*/) {
 
 }
 
-
+let data;
 /**
  * Autosuggests one or more suggestions for what the user has typed.
  * If no suggestions are passed in, then no autosuggest occurs.
@@ -165,7 +165,9 @@ AutoSuggestControl.prototype.typeAhead = function (sSuggestion /*:String*/) {
         }
 };
 
-
+function sendData(array) {
+    data = array
+}
 
 /**
  * Request suggestions for the given autosuggest control.
@@ -173,6 +175,7 @@ AutoSuggestControl.prototype.typeAhead = function (sSuggestion /*:String*/) {
  * @param oAutoSuggestControl The autosuggest control to provide suggestions for.
  */
 wordSuggestions.prototype.requestSuggestions = function (oAutoSuggestControl /*:AutoSuggestControl*/) {
+
     var aSuggestions = [];
     var sTextbox = oAutoSuggestControl.textbox.value;
     var sTextboxSplit = sTextbox.split(/[\s,]+/);
@@ -203,7 +206,7 @@ wordSuggestions.prototype.requestSuggestions = function (oAutoSuggestControl /*:
 function wordSuggestions() {
 
   console.log(this.words);
-  const lower = getAutoArray().map(element => {
+  const lower = data.map(element => {
     return element.toLowerCase();
   });
   console.log(lower);

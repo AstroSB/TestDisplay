@@ -1,3 +1,4 @@
+/*---------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 /*Color Variables*/
 :root {
     --moveITPrimary: #ff5701;
@@ -7,12 +8,15 @@
     --moveITSuccess: #27AE60;
     --moveITError: #EA4838;
     --moveITWarning: #F1C40E;
-}
-       
+}     
+/*---------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+/*Whole Page*/
 #body{
     background-color: var(--moveITWhite);
 }
 
+/*---------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+/*TopLine*/
 #topLine{
 text-align: center;
 font-family: "Satoshi", Sans-serif;
@@ -57,6 +61,10 @@ margin-bottom: 10vw;
 #searchbar::placeholder{
     color: #FFFFFF;
 }
+
+
+/*---------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+/*Checker*/
 #fail_check{
     box-shadow: 0px 0px 1.5vw 0.5vw var(--moveITError);
     transition: all 300ms ease-in-out;
@@ -92,18 +100,6 @@ margin-bottom: 10vw;
 #warning_check:focus{
     box-shadow: 0px 0px 1.5vw 1vw var(--moveITWarning);
 }
-#trackerContainer{
-    display: flex; margin-top: 5vw; width: 100%;
-}
-#successDisplay{
-    width: 50vw; margin: 0; font-size: 2.5vw;
-}
-#failDisplay{
-    width: 50vw;margin: 0; font-size: 2.5vw;
-}
-#warningDisplay{
-    width: 50vw;margin: 0; font-size: 2.5vw;
-}
 #submit_button{
     color: #FFFFFF;
     font-weight: bold;
@@ -123,6 +119,26 @@ margin-bottom: 10vw;
     color: var(--moveITPrimary);
     border: var(--moveITPrimary) 0.2vw solid;
 }
+
+
+/*---------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+/*Tracker*/
+#trackerContainer{
+    display: flex; margin-top: 5vw; width: 100%;
+}
+#successDisplay{
+    width: 50vw; margin: 0; font-size: 2.5vw;
+}
+#failDisplay{
+    width: 50vw;margin: 0; font-size: 2.5vw;
+}
+#warningDisplay{
+    width: 50vw;margin: 0; font-size: 2.5vw;
+}
+
+
+/*---------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+/*File Input */
 #fileInput{
     color: #FFFFFF;
     font-weight: bold;
@@ -138,6 +154,10 @@ margin-bottom: 10vw;
      background-color: transparent;
     color: var(--moveITPrimary)
 }
+
+
+/*---------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+/*Main Containr*/
 #main_container{
     width: 87.3vw;
     margin-left: 6.35vw;
@@ -181,6 +201,10 @@ margin-bottom: 10vw;
     margin-left: 15%;
     cursor: pointer;
 }
+
+
+/*---------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+/*Details*/
 .detail_container{
     width: 75%;
     display: none;
@@ -197,6 +221,10 @@ margin-bottom: 10vw;
     border: var(--moveITBlack) 0.1vw solid;
 
 }
+
+
+/*---------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+/*Popup*/
 #message_popup{
     width: 80%;
     display: none;
@@ -223,13 +251,16 @@ margin-bottom: 10vw;
     font-weight: bold;
     border: var(--moveITBlack) 0.1vw solid;
 }
+
+
+/*---------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+/*Autocomplete*/
 .autocomplete {
     /*the container must be positioned relative:*/
     position: relative;
     display: inline-block;
   }
-
-  .autocomplete-items {
+.autocomplete-items {
     position: absolute;
     border: var(--moveITBlack) 0.3vw solid;
     border-bottom: none;
@@ -242,17 +273,17 @@ margin-bottom: 10vw;
     font-size: 1vw;
     width: 20vw;
   }
-  .autocomplete-items div {
+.autocomplete-items div {
     padding: 10px;
     cursor: pointer;
     background-color: #fff;
     border: var(--moveITPrimary) 0.1vw solid;
   }
-  .autocomplete-items div:hover {
+.autocomplete-items div:hover {
     /*when hovering an item:*/
     background-color: #e9e9e9;
   }
-  .autocomplete-active {
+.autocomplete-active {
     /*when navigating through the items using the arrow keys:*/
     background-color: DodgerBlue !important;
     color: #ffffff;
