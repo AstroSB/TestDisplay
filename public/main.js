@@ -342,13 +342,17 @@ function generateDetails(id) {
     },100)
    
   }
-  else {
+  else if (detail.style.display == "grid" ) {
     animateDetail(detail,message, false)
     setTimeout(function () {
       detail.style.display = "none"
     }, 100)
-
-
+  }else {
+    animateDetail(detail,message,  true)
+    setTimeout(function () {
+      detail.style.display = "grid"
+      message.style.height = "25vw"
+    },100)
   }
 }
 //Function to get active Filters
