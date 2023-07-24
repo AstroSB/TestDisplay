@@ -1,3 +1,7 @@
+/**
+ * Woker function for loading search results more performance
+ */
+
 const generalLenght = 32
 importScripts("./help-functions.js")
 onmessage = (e) => {
