@@ -398,7 +398,7 @@ function generatePopup(i) {
   if (message_popup.style.display === 'none') {
     message_popup.innerHTML = `
     <div id="popup_container" ondblclick="generatePopup(${i})" >
-    <img src="./img/xicon.png" id="xicon" onclick="generatePopup(${i})">
+    <img src="./img/xicon.png" class="xicon" onclick="generatePopup(${i})">
         <!--cTest-->    <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cTest)}">${jsonData.ttTestCaseResults[i].cTest} </p>
         <!--cRuntime-->   <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cRunDescription)}">${jsonData.ttTestCaseResults[i].cRunDescription}</p>
         <!--ExitCode-->  <p title="${jsonData.ttTestCaseResults[i].iExitCode}">${jsonData.ttTestCaseResults[i].iExitCode}</p>
@@ -426,7 +426,7 @@ function generatePopup(i) {
   else{
     message_popup.innerHTML = `
     <div id="popup_container" ondblclick="generatePopup(${i})">
-    <img src="./img/xicon.png" id="xicon" onclick="generatePopup(${i})">
+    <img src="./img/xicon.png" class="xicon" onclick="generatePopup(${i})">
         <!--cTest-->    <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cTest)}">${jsonData.ttTestCaseResults[i].cTest}</p>
         <!--cRuntime-->   <p title="${escapeHTML(jsonData.ttTestCaseResults[i].cRunDescription)}">${jsonData.ttTestCaseResults[i].cRunDescription}</p>
         <!--ExitCode-->  <p title="${jsonData.ttTestCaseResults[i].iExitCode}">${jsonData.ttTestCaseResults[i].iExitCode}</p>
