@@ -202,7 +202,12 @@ margin-bottom: 10vw;
     margin-left: 15%;
     cursor: pointer;
 }
-
+.info{
+    position: relative;
+    left: 35.5vw;
+    bottom: 1.5vw;
+    width: 2vw;
+}
 
 /*---------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 /*Details*/
@@ -229,10 +234,10 @@ margin-bottom: 10vw;
 #message_popup{
     width: 80%;
     display: none;
-    min-height: 25vw;
+    min-height: 15vw;
     border: var(--moveITBlack) 0.1vw solid;
     left: 10%;
-    position: absolute;
+    position: fixed;
     top: 5%;
     background-color: #FFFFFF;
     border-radius: 1vw;
@@ -244,6 +249,7 @@ margin-bottom: 10vw;
     display: grid;
     grid-template-columns: 110%;
     grid-gap: 0.2vw;
+    
 }
 #popup_container p{
     margin: 0;
@@ -253,6 +259,11 @@ margin-bottom: 10vw;
     border: var(--moveITBlack) 0.1vw solid;
 }
 
+#infoContainer{
+    overflow-y: scroll;
+    max-height: 90%;
+    margin-bottom: -20vw;
+}
 
 /*---------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 /*Autocomplete*/
